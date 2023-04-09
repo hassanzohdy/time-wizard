@@ -3,6 +3,10 @@
     "version": "1.0.0",
     "description": "A simple dayjs wrapper to manage time and dates.",
     "main": "src/index.ts",
+    "dependencies": {
+        "dayjs": "^1.11.7",
+        "@mongez/config": "^1.0.26"
+    },
     "keywords": [
         "time",
         "date",
