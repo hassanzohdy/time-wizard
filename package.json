@@ -1,0 +1,22 @@
+{
+    "name": "@mongez/time-wizard",
+    "version": "1.0.0",
+    "description": "A simple dayjs wrapper to manage time and dates.",
+    "main": "src/index.ts",
+    "keywords": [
+        "time",
+        "date",
+        "dayjs",
+        "moment",
+        "momentjs",
+        "luxon",
+        "dates-fns",
+        "time-wizard"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/hassanzohdy/mongez-skug"
+    },
+    "author": "hassanzohdy",
+    "license": "MIT"
+}
