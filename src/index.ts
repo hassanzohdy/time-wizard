@@ -36,19 +36,22 @@ export const tomorrow = () => {
 export const thisMonth = () => {
   // get this month's date in UTC timezone
   return dayjs(now()).startOf("month").toDate();
-}
+};
 
 export const thisYear = () => {
   // get this year's date in UTC timezone
   return dayjs(now()).startOf("year").toDate();
-}
+};
 
 export const toUTC = (date: Date) => {
   // convert the given date object to UTC timezone
   return new Date(
-    date.toLocaleString("en-US", {
-      timeZone: "UTC",
-    })
+    date
+      .toLocaleString("en-US", {
+        timeZone: "UTC",
+      })
+      // @see https://stackoverflow.com/a/75226791
+      .replace(/[\u202f]/, " ")
   );
 };
 
@@ -58,8 +61,10 @@ export const fromUTC = (
 ) => {
   // convert the given UTC date object to the given timezone
   return new Date(
-    date.toLocaleString("en-US", {
-      timeZone: timezone,
-    })
+    date
+      .toLocaleString("en-US", {
+        timeZone: timezone,
+      })
+      .replace(/[\u202f]/, " ")
   );
 };
