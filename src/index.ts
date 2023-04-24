@@ -4,10 +4,10 @@ import customParseFormat from "dayjs/plugin/customParseFormat";
 import duration from "dayjs/plugin/duration";
 import relativeTime from "dayjs/plugin/relativeTime";
 import timezone from "dayjs/plugin/timezone";
-import utc from "dayjs/plugin/utc";
+import dailyUtc from "dayjs/plugin/utc";
 
 export function initializeDayjs() {
-  dayjs.extend(utc);
+  dayjs.extend(dailyUtc);
   dayjs.extend(timezone);
   dayjs.extend(duration);
   dayjs.extend(relativeTime);
@@ -43,28 +43,30 @@ export const thisYear = () => {
   return dayjs(now()).startOf("year").toDate();
 };
 
-export const toUTC = (date: Date) => {
-  // convert the given date object to UTC timezone
-  return new Date(
-    date
-      .toLocaleString("en-US", {
-        timeZone: "UTC",
-      })
-      // @see https://stackoverflow.com/a/75226791
-      .replace(/[\u202f]/, " ")
-  );
-};
-
-export const fromUTC = (
+export function tz(
   date: Date,
   timezone: string = config.get("app.timezone", "UTC")
-) => {
-  // convert the given UTC date object to the given timezone
+) {
+  // convert the given date object to the given timezone
   return new Date(
     date
       .toLocaleString("en-US", {
         timeZone: timezone,
       })
+      // @see https://stackoverflow.com/a/75226791
       .replace(/[\u202f]/, " ")
   );
+}
+
+export const toUTC = (date: Date) => {
+  return tz(date, "UTC");
+};
+
+export const utc = toUTC;
+
+export const fromUTC = (
+  date: Date,
+  timezone: string = config.get("app.timezone", "UTC")
+) => {
+  return tz(utc(date), timezone);
 };

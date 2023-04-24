@@ -1,6 +1,6 @@
 {
     "name": "@mongez/time-wizard",
-    "version": "1.0.4",
+    "version": "1.0.5",
     "description": "A simple dayjs wrapper to manage time and dates.",
     "main": "src/index.ts",
     "dependencies": {
