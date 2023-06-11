@@ -15,32 +15,32 @@ export function initializeDayjs() {
 }
 
 export const now = (): Date => {
-  return toUTC(new Date());
+  return new Date();
 };
 
-export const today = () => {
+export const today = (): Date => {
   // get today's date in UTC timezone
-  return dayjs(now()).startOf("day").toDate();
+  return dayjs().startOf("day").toDate();
 };
 
-export const yesterday = () => {
+export const yesterday = (): Date => {
   // get yesterday's date in UTC timezone
-  return dayjs(now()).subtract(1, "day").startOf("day").toDate();
+  return dayjs().subtract(1, "day").startOf("day").toDate();
 };
 
-export const tomorrow = () => {
+export const tomorrow = (): Date => {
   // get tomorrow's date in UTC timezone
-  return dayjs(now()).add(1, "day").startOf("day").toDate();
+  return dayjs().add(1, "day").startOf("day").toDate();
 };
 
-export const thisMonth = () => {
+export const thisMonth = (): Date => {
   // get this month's date in UTC timezone
-  return dayjs(now()).startOf("month").toDate();
+  return dayjs().startOf("month").toDate();
 };
 
-export const thisYear = () => {
+export const thisYear = (): Date => {
   // get this year's date in UTC timezone
-  return dayjs(now()).startOf("year").toDate();
+  return dayjs().startOf("year").toDate();
 };
 
 export function tz(
@@ -59,7 +59,17 @@ export function tz(
 }
 
 export const toUTC = (date: Date) => {
-  return tz(date, "UTC");
+  return new Date(
+    Date.UTC(
+      date.getUTCFullYear(),
+      date.getUTCMonth(),
+      date.getUTCDate(),
+      date.getUTCHours(),
+      date.getUTCMinutes(),
+      date.getUTCSeconds(),
+      date.getUTCMilliseconds()
+    )
+  );
 };
 
 export const utc = toUTC;
@@ -68,5 +78,21 @@ export const fromUTC = (
   date: Date,
   timezone: string = config.get("app.timezone", "UTC")
 ) => {
-  return tz(utc(date), timezone);
+  const options: Intl.DateTimeFormatOptions = {
+    timeZone: timezone,
+    hour12: false,
+  };
+  const targetTime: string = date.toLocaleString("en-US", options);
+
+  // now split the string to get the date and time
+  const [datePart, timePart] = targetTime.split(", ");
+
+  // split the time to get the hour
+  const [hour, minute, second] = timePart.split(":").map(Number);
+
+  // split the date to get the month and day
+  const [month, day, year] = datePart.split("/").map(Number);
+
+  // return the date with the date
+  return new Date(year, month - 1, day, hour, minute, second);
 };
